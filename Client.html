@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script>
+      function downloadPdfFile(pdfFile){
+        let link = document.createElement('a');
+        let data = URL.createObjectURL(pdfFile);
+        link.setAttribute('href', data);
+        link.setAttribute('download', 'result.pdf');
+        link.click();
+      }
+      function uploadFiles(inputId) {
+var input = document.getElementById(inputId);
+var htmlFile = input.files[0];
+var formData = new FormData();
+formData.append("htmlFile", htmlFile);
+$.ajax(
+  {
+    url: "http://localhost:5156/Convert/Hello",
+    data: formData,
+    processData: false,
+    contentType: false,
+    xhrFields: {
+      responseType: 'blob'  
+    },
+    type: "POST",
+    error: function (xhr){
+      console.log(xhr.status);
+    },
+    success: function (pdfFile) {
+      downloadPdfFile(pdfFile);   
+    }
+  }
+);
+}
+  </script>
+
+</head>
+
+<body>
+            <div>Click on the button and select the html file to convert to pdf</div>
+            <input id="files" name="files" type="file" size="1" accept=".html" onchange="uploadFiles('files');" />
+</body>
+
+</html>
